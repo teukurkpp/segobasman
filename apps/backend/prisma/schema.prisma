@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  KASIR
+}
+
+enum OrderStatus {
+  AKTIF
+  SELESAI
+  DIBATALKAN
+}
+
+enum MenuAvailability {
+  TERSEDIA
+  HABIS
+}
+
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  password  String
+  nama      String
+  role      UserRole
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orders    Order[]
+
+  @@map("users")
+}
+
+model Kategori {
+  id        String   @id @default(uuid())
+  nama      String   @unique
+  deskripsi String?
+  urutan    Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  menus     Menu[]
+
+  @@map("kategori")
+}
+
+model Menu {
+  id            String           @id @default(uuid())
+  nama          String
+  deskripsi     String?
+  harga         Decimal          @db.Decimal(10, 2)
+  gambar        String?
+  availability  MenuAvailability @default(TERSEDIA)
+  kategoriId    String
+  kategori      Kategori         @relation(fields: [kategoriId], references: [id])
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  orderItems    OrderItem[]
+
+  @@map("menu")
+}
+
+model Order {
+  id            String      @id @default(uuid())
+  nomorAntrian  Int
+  namaPelanggan String
+  totalHarga    Decimal     @db.Decimal(10, 2)
+  status        OrderStatus @default(AKTIF)
+  kasirId       String
+  kasir         User        @relation(fields: [kasirId], references: [id])
+  createdAt     DateTime    @default(now())
+  completedAt   DateTime?
+
+  items         OrderItem[]
+
+  @@index([status, createdAt])
+  @@index([nomorAntrian, createdAt])
+  @@map("orders")
+}
+
+model OrderItem {
+  id          String  @id @default(uuid())
+  orderId     String
+  order       Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuId      String
+  menu        Menu    @relation(fields: [menuId], references: [id])
+  quantity    Int
+  hargaSatuan Decimal @db.Decimal(10, 2)
+  subtotal    Decimal @db.Decimal(10, 2)
+
+  @@map("order_items")
+}
