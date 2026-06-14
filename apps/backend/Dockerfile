@@ -1,4 +1,4 @@
-FROM node:20-bookworm-slim AS builder
+FROM node:20-bookworm AS builder
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ COPY . .
 RUN npx prisma generate
 RUN npm run build
 
-FROM node:20-bookworm-slim AS runner
+FROM node:20-bookworm AS runner
 
 WORKDIR /app
 
@@ -21,4 +21,4 @@ COPY package*.json ./
 
 EXPOSE 3001
 
-CMD ["sh", "-c", "node_modules/.bin/prisma migrate deploy && node dist/main.js"]
+CMD ["sh", "-c", "node_modules/.bin/prisma migrate deploy && node dist/src/main.js"]
