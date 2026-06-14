@@ -2,9 +2,11 @@
   "name": "sego-basman-backend",
   "version": "1.0.0",
   "private": true,
+  "prisma": {
+    "schema": "./prisma/schema.prisma"
+  },
   "scripts": {
     "build": "prisma generate && nest build",
-    "postinstall": "prisma generate",
     "start": "node dist/main",
     "start:prod": "node dist/main.js",
     "start:dev": "nest start --watch",
