@@ -21,6 +21,6 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/.env ./.env
 
-EXPOSE 3001
+EXPOSE 8080
 
 CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
