@@ -2,7 +2,7 @@
 const nextConfig = {
   images: {
     remotePatterns: [
-      { protocol: 'https', hostname: '**' },
+      { protocol: "https", hostname: "segobasman-production.up.railway.app" },
     ],
   },
 };
