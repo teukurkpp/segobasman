@@ -1,4 +1,4 @@
-# Sego Pedes Basman — Aplikasi Digitalisasi UMKM
+# Sego Pedes Basman — Digital Queue System Prototype 
 
 Aplikasi web terintegrasi untuk UMKM kuliner **Sego Pedes Basman** yang menyelesaikan tiga masalah operasional utama:
 
